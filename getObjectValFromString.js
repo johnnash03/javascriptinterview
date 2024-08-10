@@ -1,3 +1,4 @@
+// solve the edge case of [ in mind quickly
 /* 
 const obj = {
   a: {
