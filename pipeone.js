@@ -1,3 +1,4 @@
+// explain why object manipulation curr[ob] = works on original object
 /* Input:
 let test = {
     a: {
