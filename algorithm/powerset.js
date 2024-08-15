@@ -4,9 +4,8 @@ function powerset(array) {
   powersetUtil(array, 0, [], allSet);
   return allSet;
 }
-
+// We need to maintain index in such questions.
 function powersetUtil(array, index, currSet, allSet) {
-  // console.log('currSet', currSet, n)
   if (index === array.length) {
     allSet.push([...currSet]);
     return;
