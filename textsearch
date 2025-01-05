@@ -1,0 +1,63 @@
+function textSearch(text, searchTerm) {
+    if (!text || !searchTerm) return text; // Return original text if inputs are invalid
+    const lowerText = text.toLowerCase();
+    const lowerSearchTerm = searchTerm.toLowerCase();
+    const searchTermLength = searchTerm.length;
+
+    let result = '';
+    let index = 0;
+    let isInBold = false; // Tracks whether we are in a bold section
+
+    while (index < text.length) {
+        const matchIndex = lowerText.indexOf(lowerSearchTerm, index);
+
+        if (matchIndex === -1) {
+            // No more matches, close any open <b> tag and append the rest of the text
+            if (isInBold) {
+                result += '</b>';
+                isInBold = false;
+            }
+            result += text.slice(index);
+            break;
+        }
+
+        if (matchIndex > index) {
+            // Add text before the match
+            if (isInBold) {
+                result += '</b>';
+                isInBold = false;
+            }
+            result += text.slice(index, matchIndex);
+        }
+
+        // Add the matched term
+        if (!isInBold) {
+            result += '<b>';
+            isInBold = true;
+        }
+        result += text.slice(matchIndex, matchIndex + searchTermLength);
+
+        // Move the index past the matched term
+        index = matchIndex + searchTermLength;
+    }
+
+    // Close any open <b> tag
+    if (isInBold) {
+        result += '</b>';
+    }
+
+    return result;
+}
+
+// Examples:
+console.log(textSearch('The Quick Brown Fox Jumps Over The Lazy Dog', 'fox'));
+// Output: 'The Quick Brown <b>Fox</b> Jumps Over The Lazy Dog'
+
+console.log(textSearch('The hardworking Dog overtakes the lazy dog', 'dog'));
+// Output: 'The hardworking <b>Dog</b> overtakes the lazy <b>dog</b>'
+
+console.log(textSearch('aaa', 'aa'));
+// Output: '<b>aa</b>a'
+
+console.log(textSearch('aaaa', 'aa'));
+// Output: '<b>aaaa</b>'
