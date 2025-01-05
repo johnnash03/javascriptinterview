@@ -1,3 +1,5 @@
+// What is counter variable here?
+
 function minWindow(s, t) {
   const map = {};
   for (let ch of t) {
@@ -12,6 +14,11 @@ function minWindow(s, t) {
 
   while (end < s.length) {
     if (map[s[end]] > 0) {
+      console.log(
+        `counter decremented from ${counter} to ${counter - 1} on end ${
+          s[end]
+        } : ${map[s[end]]}`
+      );
       counter--;
       // map[s[end]]--;
     }
@@ -28,16 +35,21 @@ function minWindow(s, t) {
       }
 
       if (map[s[start]] === 0) {
+        console.log(
+          `counter incremented from ${counter} to ${counter + 1} on start ${
+            s[start]
+          } : ${map[s[start]]}`
+        );
         counter++;
       }
       if (map[s[start]] !== undefined) {
         map[s[start]]++;
       }
-      console.log(start, end, counter, map);
+      // console.log(start, end, counter, map);
       start++;
     }
   }
-  console.log("start", start, minLenStart);
+  // console.log("start", start, minLenStart);
   return minLen === Infinity
     ? ""
     : s.substring(minLenStart, start + minLenStart);
