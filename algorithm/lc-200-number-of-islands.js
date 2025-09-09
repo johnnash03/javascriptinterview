@@ -77,7 +77,7 @@ const grid = [
 
 // Better solution
 
-function numIslandsBetter(grid) {
+function numIslandsBetterBfs(grid) {
   const m = grid.length;
   if (m === 0) return 0;
   const n = grid[0].length;
@@ -122,4 +122,53 @@ function numIslandsBetter(grid) {
   }
   return count;
 }
-numIslands(grid);
+
+function numIslandsDfs(grid) {
+  let rowsNum = grid.length;
+  let colsNum = grid[0].length;
+  let count = 0;
+  const DIRS = [
+    [0, 1],
+    [0, -1],
+    [1, 0],
+    [-1, 0],
+  ];
+  const seen = Array.from({ length: rowsNum }, () =>
+    Array(colsNum).fill(false)
+  );
+
+  function dfs([x, y]) {
+    // When will this dfs function return?
+
+    for (const dir of DIRS) {
+      let neighbourX = x + dir[0];
+      let neighbourY = y + dir[1];
+      let isInBound =
+        neighbourX >= 0 &&
+        neighbourX < rowsNum &&
+        neighbourY >= 0 &&
+        neighbourY < colsNum;
+
+      if (
+        isInBound &&
+        grid[neighbourX][neighbourY] === "1" &&
+        !seen[neighbourX][neighbourY]
+      ) {
+        // Should seen be marked only here
+        seen[neighbourX][neighbourY] = true;
+        console.log("doing dfs", neighbourX, neighbourY);
+        dfs([neighbourX, neighbourY]);
+      }
+    }
+  }
+  for (let i = 0; i < rowsNum; i++) {
+    for (let j = 0; j < colsNum; j++) {
+      if (!seen[i][j] && grid[i][j] === "1") {
+        count++;
+        dfs([i, j]);
+      }
+    }
+  }
+  return count;
+}
+numIslandsDfs(grid);
