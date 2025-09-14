@@ -1,4 +1,4 @@
-var canFinish = function (numCourses, prerequisites) {
+var canFinishFirst = function (numCourses, prerequisites) {
   // Let's create an adjacency list first.
   // Should we use a map to create adjacency list
   let adjList = new Map();
@@ -66,6 +66,37 @@ var canFinish = function (numCourses, prerequisites) {
   }
   return true;
   // console.log("adjList", adjList, status);
+};
+
+var canFinish = function (numCourses, prerequisites) {
+  // first item -> dependant course(same as in the prerequisites array)
+  const adjList = Array.from({ length: numCourses }, () => []);
+  for (let prerequisite of prerequisites) {
+    console.log("prerequisite", prerequisite[0], prerequisite[1]);
+    adjList[prerequisite[0]].push(prerequisite[1]);
+  }
+  console.log("adjList", adjList);
+
+  const statuses = Array.from({ length: numCourses }, () => "UNVISITED");
+  console.log("statuses", statuses);
+
+  // dfs(node) => everything reachable from node is cycle free
+
+  function dfs(node) {
+    if (statuses[node] === "VISITING") return false;
+    if (statuses[node] === "VISITED") return true;
+    statuses[node] = "VISITING";
+    for (let i = 0; i < adjList[node].length; i++) {
+      let nei = adjList[node];
+      if (!dfs(nei)) return false;
+    }
+    statuses[node] = "VISITED";
+    return true;
+  }
+  for (let i = 0; i < numCourses; i++) {
+    if (!dfs(i)) return false;
+  }
+  return true;
 };
 
 console.log(
